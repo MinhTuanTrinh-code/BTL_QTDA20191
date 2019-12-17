@@ -1,0 +1,121 @@
+#include<reg51.h>
+
+void delay(int);
+sbit btn0 = P3^2;
+sbit btn1 = P3^3;
+unsigned int i=0;
+
+int main(void)
+{
+	//unsigned char ch[9]={0x7f,0x3f,0x1f,0x0f,0x07,0x03,0x01,0x00,0xff};
+	unsigned char ch[9]={0x7f,0xbf,0xdf,0xef,0xf7,0xfb,0xfd,0xfe,0xff};
+	unsigned char ch1[4]={0x7e,0xbd,0xdb,0xe7};
+	unsigned char ch2 = 0xff;
+
+   	P2 = 0x00;   
+	EA=1;		
+	EX0=1;
+	EX1=1;
+	
+
+	while(1)           
+	{
+		btn0=1;
+		btn1=1;
+
+		switch(i%4) {
+		case 0: 
+		{
+		P2 =ch2;
+		 ch2=~ch2;
+		delay(30000)	 ;
+		} break;
+		case 1: 
+		{
+			
+			P2 = ch[8];
+			delay(30000);
+			P2 = ch[0];
+			delay(30000);
+			P2 = ch[1];
+			delay(30000);
+			P2 = ch[2];
+			delay(30000);
+			P2 = ch[3];
+			delay(30000);
+			P2 = ch[4];
+			delay(30000);
+			P2 = ch[5];
+			delay(30000);
+			P2 = ch[6];
+			delay(30000);
+			P2 = ch[7];
+			delay(30000);
+		} break;
+		case 2:
+		{	
+			P2 = ch[8];
+			delay(30000);
+			P2 = ch[7];
+			delay(30000);
+			P2 = ch[6];
+			delay(30000);
+			P2 = ch[5];
+			delay(30000);
+			P2 = ch[4];
+			delay(30000);
+			P2 = ch[3];
+			delay(30000);
+			P2 = ch[2];
+			delay(30000);
+			P2 = ch[1];
+			delay(30000);
+			P2 = ch[0];
+			delay(30000);
+		} break;
+		case 3:
+		{
+		   P2 = 0xff;
+			delay(30000);
+			P2 = ch1[0];
+			delay(30000);
+			P2 = ch1[1];
+			delay(30000);
+			P2 = ch1[2];
+			delay(30000);
+			P2 = ch1[3];
+			delay(30000);
+			P2 = ch1[3];
+			delay(30000);
+			P2 = ch1[2];
+			delay(30000);
+			P2 = ch1[1];
+			delay(30000);
+			P2 = ch1[0];
+			delay(30000);
+		} break;
+		//default : {P2 = 0x00; delay(300000);};
+		}	  
+	} 
+}
+
+
+void EX0_ISR()   interrupt 0    		
+{	
+ 	delay(30000);
+    i++;	
+	P2 = 0;				
+}
+void EX2_ISR()   interrupt 2   		
+{	
+	delay(30000);
+    i--;	
+	P2 = 0;				
+}
+
+
+void delay(int a)
+{
+   int i;
+   for(i=0;i<a;i++);   
+}
